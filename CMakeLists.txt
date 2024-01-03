@@ -41,7 +41,7 @@ add_executable(low_level_ctrl src/low_level_ctrl.cpp src/common/motor_crc.cpp)
 add_executable(read_low_state src/read_low_state.cpp)
 add_executable(read_motion_state src/read_motion_state.cpp)
 add_executable(read_wireless_controller src/read_wireless_controller.cpp)
-add_executable(record_bag src/record_bag.cpp)
+# add_executable(record_bag src/record_bag.cpp)
 add_executable(sport_mode_ctrl src/sport_mode_ctrl.cpp src/common/ros2_sport_client.cpp)
 add_executable(circle_mode_ctrl src/circle_mode_ctrl.cpp src/common/ros2_sport_client.cpp)
 add_executable(transfer_ros_cmd src/transfer_ros_cmd.cpp src/common/ros2_sport_client.cpp)
@@ -50,7 +50,7 @@ ament_target_dependencies(low_level_ctrl ${DEPENDENCY_LIST})
 ament_target_dependencies(read_low_state ${DEPENDENCY_LIST})
 ament_target_dependencies(read_motion_state ${DEPENDENCY_LIST})
 ament_target_dependencies(read_wireless_controller ${DEPENDENCY_LIST})
-ament_target_dependencies(record_bag ${DEPENDENCY_LIST})
+# ament_target_dependencies(record_bag ${DEPENDENCY_LIST})
 ament_target_dependencies(sport_mode_ctrl ${DEPENDENCY_LIST})
 ament_target_dependencies(circle_mode_ctrl ${DEPENDENCY_LIST})
 
@@ -60,7 +60,7 @@ install(TARGETS
         read_low_state
         read_motion_state
         read_wireless_controller
-        record_bag
+        # record_bag
         sport_mode_ctrl
         circle_mode_ctrl
         DESTINATION lib/${PROJECT_NAME})
