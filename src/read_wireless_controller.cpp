@@ -3,7 +3,7 @@
  **/
 #include "rclcpp/rclcpp.hpp"
 #include "unitree_go/msg//wireless_controller.hpp"
-#include "std_msgs/msg/float64_multi_array.hpp"
+#include "geometry_msgs/msg/twist_stamped.hpp"
 
 using std::placeholders::_1;
 
@@ -12,7 +12,7 @@ class wireless_controller_suber : public rclcpp::Node
 public:
   wireless_controller_suber() : Node("wireless_controller_suber")
   {
-    pub_controller = this->create_publisher<std_msgs::msg::Float64MultiArray>("/unitree_go/controller_array", 20);
+    pub_controller = this->create_publisher<geometry_msgs::msg::TwistStamped>("/unitree_go2/cmd_vel", 20);
     // the cmd_puber is set to subscribe "/wirelesscontroller" topic
     suber = this->create_subscription<unitree_go::msg::WirelessController>(
         "/wirelesscontroller", 10, std::bind(&wireless_controller_suber::topic_callback, this, _1));
@@ -29,13 +29,20 @@ private:
 
     RCLCPP_INFO(this->get_logger(), "Wireless controller -- lx: %f; ly: %f; rx: %f; ry: %f; key value: %d",
                 data->lx, data->ly, data->rx, data->ry, data->keys);
-    auto message = std_msgs::msg::Float64MultiArray();
-    message.data = {data->lx, data->ly, data->rx, data->ry};
+    auto message = geometry_msgs::msg::TwistStamped();
+    message.header.stamp = this->now();
+    message.twist.linear.x = data->lx;
+    message.twist.linear.y = data->ly;
+    message.twist.linear.z = 0;
+    message.twist.angular.x = 0;
+    message.twist.angular.y = 0;
+    message.twist.angular.z = data->rx;
+
     pub_controller->publish(message);
   }
 
   rclcpp::Subscription<unitree_go::msg::WirelessController>::SharedPtr suber;
-  rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr pub_controller;
+  rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr pub_controller;
 };
 
 int main(int argc, char *argv[])
